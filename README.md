@@ -1,1 +1,5 @@
 # MPC
+
+```
+pip install pybullet
+```
