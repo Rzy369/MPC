@@ -2,10 +2,10 @@ import numpy as np
 import robot_state
 import mpc
 import needle_model
-import ref_path
+import path
 import visualization
 
-path = ref_path.setting_easy_ref_path(0.5, np.radians(20))
+path = path.setting_easy_path(0.5, np.radians(20))
 
 visualization.path_plot(path)
 

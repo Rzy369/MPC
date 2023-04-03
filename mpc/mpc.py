@@ -1,8 +1,8 @@
 import cvxpy
 import numpy as np
-import needle_model
+import find_nearest_error
 
-def mpc_controller(x_ref, initial_state, model):
+def mpc_controller(path, initial_state, model):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
         a_max = 3                       #[m/s^2]        # Max acceleration
@@ -32,7 +32,7 @@ def mpc_controller(x_ref, initial_state, model):
         gamma_initial = initial_state.gamma
         A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial)
 
-        for k in range(N+1):
+        for k in range(N):
 
                 # adding the constriants
                 constraints += [x[:, k+1] == A@x[:, k] + B@u[:, k]]
@@ -41,8 +41,10 @@ def mpc_controller(x_ref, initial_state, model):
                 constraints += [u[1, k] <= theta_max]
                 constraints += [u[1, k] >= theta_min]
 
+                err = find_nearest_error.find_nearest_error(path, x[:, k])
+
                 # adding the costs
-                costs += cvxpy.quad_form(x[:, k] - x_ref[:, k], Q)
+                costs += cvxpy.quad_form(err, Q)
                 costs += cvxpy.quad_form(u[:, k], R)
 
         # solving

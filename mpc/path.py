@@ -2,7 +2,7 @@ import robot_state
 import random
 import numpy as np
 
-class ref_path:
+class path:
     '''
     Using lists to record the ref path
     '''
@@ -11,7 +11,7 @@ class ref_path:
         self.y_ref = y_ref
         self.z_ref = z_ref
 
-def setting_easy_ref_path(a, theta):
+def setting_easy_path(a, theta):
     rob = robot_state.robot_state()
     
     step = 100                          # step between stages
@@ -26,15 +26,16 @@ def setting_easy_ref_path(a, theta):
 
     for i in range(step):
         rob.state_update(a, theta, k)
-        x.append(rob.x)
-        y.append(rob.y)
-        z.append(rob.z)
+        if i % 2 == 0:
+            x.append(rob.x)
+            y.append(rob.y)
+            z.append(rob.z)
 
-    path = ref_path(x, y, z)
+    ref_path = path(x, y, z)
 
-    return path
+    return ref_path
 
-def generate_rand_ref_path():
+def generate_rand_path():
     rob = robot_state.robot_state()
 
     step = 100                          # step between stages
@@ -59,6 +60,6 @@ def generate_rand_ref_path():
         y.append(rob.y)
         z.append(rob.z)
     
-    path = ref_path(x, y, z)
+    ref_path = path(x, y, z)
 
-    return path
+    return ref_path
