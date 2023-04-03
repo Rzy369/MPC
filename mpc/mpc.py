@@ -35,7 +35,7 @@ def mpc_controller(x_ref, initial_state, model):
         for k in range(N+1):
 
                 # adding the constriants
-                constraints += [x[:, k+1] == A.dot(x[:, k]) + B.dot(u[:, k])]
+                constraints += [x[:, k+1] == A@x[:, k] + B@u[:, k]]
                 constraints += [u[0, k] <= a_max]                      
                 constraints += [u[0, k] >= a_min]
                 constraints += [u[1, k] <= theta_max]
