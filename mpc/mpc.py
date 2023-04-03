@@ -2,7 +2,7 @@ import cvxpy
 import numpy as np
 import needle_model
 
-def mpc_controller(x_ref, initial_state, model, param):
+def mpc_controller(x_ref, initial_state, model):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
         a_max = 3                       #[m/s^2]        # Max acceleration
@@ -30,7 +30,7 @@ def mpc_controller(x_ref, initial_state, model, param):
         alpha_initial = initial_state.alpha
         beta_initial = initial_state.beta
         gamma_initial = initial_state.gamma
-        A, B = model.model(alpha_initial, beta_initial, gamma_initial, param)
+        A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial)
 
         for k in range(N+1):
 

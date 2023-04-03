@@ -3,7 +3,7 @@ import numpy as np
 class needle_model_for_prediction():
     def __init__(self):
         pass
-    def model(self, alpha_m, beta_m, gamma_m, param):
+    def sol_Matrix(self, alpha_m, beta_m, gamma_m):
         '''
         According to the paper, the kinematics model is 
         q_(m+1) = q_m + dq_m * dt,
@@ -31,6 +31,3 @@ class needle_model_for_prediction():
                       [dt, 0]])
 
         return A, B
-
-if __name__ == '__main__':
-    model = needle_model_for_prediction()
