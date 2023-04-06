@@ -63,3 +63,29 @@ def generate_rand_path():
     ref_path = path(x, y, z)
 
     return ref_path
+
+
+def generate_straight_path():
+    rob = robot_state.robot_state()
+
+    step = 100                          # step between stages
+    k = 0
+
+    x = []
+    y = []
+    z = []
+    x.append(rob.x)
+    y.append(rob.y)
+    z.append(rob.z)
+
+    for i in range(step):
+        theta = 0
+        a = 0
+        rob.state_update(a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+    
+    ref_path = path(x, y, z)
+
+    return ref_path

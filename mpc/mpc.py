@@ -33,7 +33,8 @@ def mpc_controller(path, initial_state, model):
         A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial)
 
         for k in range(N):
-
+                # iter A, B
+                # A, B = model.sol_Matrix(x[k,0], x[k,1], x[k,2])
                 # adding the constriants
                 constraints += [x[:, k+1] == A@x[:, k] + B@u[:, k]]
                 constraints += [u[0, k] <= a_max]                      
