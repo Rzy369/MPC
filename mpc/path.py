@@ -11,7 +11,7 @@ class path:
         self.y_ref = y_ref
         self.z_ref = z_ref
 
-def setting_easy_path(a, theta):
+def setting_easy_path(a, theta, k):
     rob = robot_state.robot_state()
     
     step = 100                          # step between stages
@@ -24,7 +24,7 @@ def setting_easy_path(a, theta):
     z.append(rob.z)
 
     for i in range(step):
-        rob.state_update(a, theta)
+        rob.state_update(a, theta, k)
         x.append(rob.x)
         y.append(rob.y)
         z.append(rob.z)
@@ -33,7 +33,7 @@ def setting_easy_path(a, theta):
 
     return ref_path
 
-def generate_rand_path():
+def generate_rand_path(k):
     rob = robot_state.robot_state()
 
     step = 100                          # step between stages
@@ -52,7 +52,7 @@ def generate_rand_path():
     for i in range(step):
         theta = random.uniform(theta_min, theta_max)
         a = random.uniform(a_min, a_max)
-        rob.state_update(a, theta)
+        rob.state_update(a, theta, k)
         x.append(rob.x)
         y.append(rob.y)
         z.append(rob.z)
@@ -60,3 +60,4 @@ def generate_rand_path():
     ref_path = path(x, y, z)
 
     return ref_path
+

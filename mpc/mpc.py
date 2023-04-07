@@ -1,7 +1,7 @@
 import cvxpy
 import numpy as np
 
-def mpc_controller(x_ref, initial_state, model):
+def mpc_controller(x_ref, initial_state, model, k):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
         a_max = 3                       #[m/s^2]        # Max acceleration
@@ -29,7 +29,7 @@ def mpc_controller(x_ref, initial_state, model):
         alpha_initial = initial_state.alpha
         beta_initial = initial_state.beta
         gamma_initial = initial_state.gamma
-        A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial)
+        A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial, k)
 
         for k in range(N):
                 # adding the constriants

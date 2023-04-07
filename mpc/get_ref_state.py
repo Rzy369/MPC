@@ -72,7 +72,8 @@ def get_ref_state(ref_path, robo_state):
         x_ref[4, N+1] = 0
         x_ref[5, N+1] = 0
         x_ref[6, N+1] = 0
-        
+    
+    # print(x_ref)
     return x_ref
 
 

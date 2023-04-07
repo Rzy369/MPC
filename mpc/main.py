@@ -9,9 +9,9 @@ import get_ref_state
 
 dt = 0.1        #[s]                    # Time step
 time = 0        #[s]                    # Total time
+k = 0
 
-
-path = path.setting_easy_path(0.5, np.radians(20))
+path = path.setting_easy_path(0.5, np.radians(20), k)
 
 robo = robot_state.robot_state(x = 0, y = 0, z = 0, alpha = 0, beta = 0, gamma = 0, v = 0)
 model = needle_model.needle_model_for_prediction()
@@ -24,12 +24,16 @@ ax.set_xlabel('X', fontdict={'size': 15, 'color': 'red'})
 ax.plot(path.x_ref, path.y_ref, path.z_ref)
 plt.ion()
 
-while time < 15:
+# print(path.x_ref)
+# print(path.y_ref)
+# print(path.z_ref)
+
+while time < 50:
     x_ref = get_ref_state.get_ref_state(path, robo)
-    x_pred, u_pred = mpc.mpc_controller(x_ref, robo, model)
+    x_pred, u_pred = mpc.mpc_controller(x_ref, robo, model, k)
     a = u_pred[0][0]
     theta = u_pred[1][0]
-    robo.state_update(a, theta)
+    robo.state_update(a, theta, k)
     time += dt
 
     print("``````````````````````````````````````")
@@ -39,7 +43,7 @@ while time < 15:
     y_cur = robo.y
     z_cur = robo.z
     ax.scatter(x_cur, y_cur, z_cur, s=20, c='b', marker='o')
-    plt.pause(0.01)
+    plt.pause(0.001)
 
 
 

@@ -3,7 +3,7 @@ import numpy as np
 class needle_model_for_prediction():
     def __init__(self):
         pass
-    def sol_Matrix(self, alpha_m, beta_m, gamma_m):
+    def sol_Matrix(self, alpha_m, beta_m, gamma_m, k):
         '''
         According to the paper, the kinematics model is 
         q_(m+1) = q_m + dq_m * dt,
@@ -12,7 +12,6 @@ class needle_model_for_prediction():
         the model can be transfered to x = Ax + Bu
         '''
         dt = 0.1        #[s]                    # Time step
-        k = 1/150       #[mm^{-1}]              # Curvature
 
         A = np.eye(7)
         A[6, 0] = np.sin(beta_m) * dt

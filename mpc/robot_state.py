@@ -10,14 +10,13 @@ class robot_state():
         self.gamma = gamma
         self.v = v
 
-    def state_update(self, a, theta):
+    def state_update(self, a, theta, k):
         '''
         Updating the state of robot,
         a is the acceleration of the velocity v,
         theta is the angel rotated around the z axis.
         '''
         dt = 0.1
-        k = 1/150
         self.x += self.v * np.sin(self.beta) * dt
         self.y += self.v * (-np.cos(self.beta) * np.sin(self.alpha)) * dt
         self.z += self.v * (np.cos(self.alpha) * np.cos(self.beta)) * dt
