@@ -1,8 +1,7 @@
 import cvxpy
 import numpy as np
-import find_nearest_error
 
-def mpc_controller(path, initial_state, model):
+def mpc_controller(x_ref, initial_state, model):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
         a_max = 3                       #[m/s^2]        # Max acceleration
@@ -10,8 +9,8 @@ def mpc_controller(path, initial_state, model):
         theta_max = np.radians(60)      #[]             # Max theta per time step
         theta_min = -np.radians(60)     #[]             # Min theta per time step
 
-        Q = np.diag([2, 2, 2, 2, 2, 2, 1])              # weighting matrix
-        R = np.diag([2, 2])                             # weighting matrix
+        Q = np.diag([10000, 10000, 10000, 0, 0, 0, 1])              # weighting matrix
+        R = np.diag([0, 0])                             # weighting matrix
 
         # initializing the input and state
         x = cvxpy.Variable((7, N+1))
@@ -33,8 +32,6 @@ def mpc_controller(path, initial_state, model):
         A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial)
 
         for k in range(N):
-                # iter A, B
-                # A, B = model.sol_Matrix(x[k,0], x[k,1], x[k,2])
                 # adding the constriants
                 constraints += [x[:, k+1] == A@x[:, k] + B@u[:, k]]
                 constraints += [u[0, k] <= a_max]                      
@@ -42,10 +39,8 @@ def mpc_controller(path, initial_state, model):
                 constraints += [u[1, k] <= theta_max]
                 constraints += [u[1, k] >= theta_min]
 
-                err = find_nearest_error.find_nearest_error(path, x[:, k])
-
                 # adding the costs
-                costs += cvxpy.quad_form(err, Q)
+                costs += cvxpy.quad_form(x[:, k] - x_ref[:, k], Q)
                 costs += cvxpy.quad_form(u[:, k], R)
 
         # solving

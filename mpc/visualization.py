@@ -15,3 +15,9 @@ def path_plot(path):
     ax.set_ylabel('Y', fontdict={'size': 15, 'color': 'red'})
     ax.set_xlabel('X', fontdict={'size': 15, 'color': 'red'})
     plt.show()
+
+def robo_plot(robo_state):
+    x_cur = robo_state.x
+    y_cur = robo_state.y
+    z_cur = robo_state.z
+    plt.scatter(x_cur, y_cur, z_cur, s=20, c='b', marker='o')
