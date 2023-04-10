@@ -5,11 +5,12 @@ import find_nearest_index
 def get_ref_state(ref_path, robo_state):
     N = 6                           #[]             # Predict Horizon
     size = len(ref_path.x_ref)      # length of ref_path
+    print(size)
     x_ref = np.zeros((7, N+1))
     index = find_nearest_index.find_nearest_index(ref_path, robo_state)
 
     print("the closest index is @ ", index)
-    if index != 0:
+    if index != 0 & index != size - N - 1:
         for i in range(N + 1):
             x_ref[0, i] = ref_path.x_ref[index + i]
             x_ref[1, i] = ref_path.y_ref[index + i]
@@ -49,7 +50,7 @@ def get_ref_state(ref_path, robo_state):
 
             x_ref[6, i] = v_ref
 
-    if index == size - N:
+    if index == size - N - 1:
         for i in range(N):
             x_ref[0, i] = ref_path.x_ref[index + i]
             x_ref[1, i] = ref_path.y_ref[index + i]

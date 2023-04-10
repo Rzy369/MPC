@@ -4,8 +4,8 @@ import numpy as np
 def mpc_controller(x_ref, initial_state, model, k, path):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
-        a_max = 1                     #[m/s^2]        # Max acceleration
-        a_min = 0                     #[m/s^2]        # Min acceleration
+        a_max = 3                       #[m/s^2]        # Max acceleration
+        a_min = -1                      #[m/s^2]        # Min acceleration
         theta_max = np.deg2rad(60)      #[]             # Max theta per time step
         theta_min = -np.deg2rad(60)     #[]             # Min theta per time step
 

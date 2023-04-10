@@ -6,7 +6,7 @@ def find_nearest_index(ref_path, robo_state):
     N = 6                           # Number
     size = len(ref_path.x_ref)      # length of ref_path
     err_list = []
-    for i in range(1, size - N + 1):
+    for i in range(1, size - N):
         dx = robo_state.x - ref_path.x_ref[i]
         dy = robo_state.y - ref_path.y_ref[i]
         dz = robo_state.z - ref_path.z_ref[i]
