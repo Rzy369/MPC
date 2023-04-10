@@ -1,16 +1,16 @@
 import cvxpy
 import numpy as np
 
-def mpc_controller(x_ref, initial_state, model, k):
+def mpc_controller(x_ref, initial_state, model, k, path):
         v0 = 0                          #[m/s]          # Initial speed
         N = 6                           #[]             # Predict Horizon
-        a_max = 3                       #[m/s^2]        # Max acceleration
-        a_min = -1                      #[m/s^2]        # Min acceleration
-        theta_max = np.radians(60)      #[]             # Max theta per time step
-        theta_min = -np.radians(60)     #[]             # Min theta per time step
+        a_max = 1                     #[m/s^2]        # Max acceleration
+        a_min = 0                     #[m/s^2]        # Min acceleration
+        theta_max = np.deg2rad(60)      #[]             # Max theta per time step
+        theta_min = -np.deg2rad(60)     #[]             # Min theta per time step
 
-        Q = np.diag([10000, 10000, 10000, 0, 0, 0, 1])              # weighting matrix
-        R = np.diag([0, 0])                             # weighting matrix
+        Q = np.diag([10, 10, 10, 0, 0, 0, 10])              # weighting matrix
+        R = np.diag([5, 5])                             # weighting matrix
 
         # initializing the input and state
         x = cvxpy.Variable((7, N+1))
@@ -43,6 +43,8 @@ def mpc_controller(x_ref, initial_state, model, k):
                 costs += cvxpy.quad_form(x[:, k] - x_ref[:, k], Q)
                 costs += cvxpy.quad_form(u[:, k], R)
 
+        costs += cvxpy.quad_form(x[:, N] - x_ref[:, N], Q)
+        costs += cvxpy.quad_form(x[:3, N] - [path.x_ref[-1], path.y_ref[-1], path.z_ref[-1]], Q[:3, :3])
         # solving
         problem = cvxpy.Problem(cvxpy.Minimize(costs), constraints)
         problem.solve()

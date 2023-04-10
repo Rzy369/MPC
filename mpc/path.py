@@ -37,7 +37,7 @@ def generate_rand_path(k):
     rob = robot_state.robot_state()
 
     step = 100                          # step between stages
-    a_max = 3
+    a_max = 1
     a_min = -1
     theta_max = np.radians(60)
     theta_min = -np.radians(60)
