@@ -11,7 +11,7 @@ class needle_model_for_prediction():
         hereby the theta is the angle rotated about the z-axis.
         the model can be transfered to x = Ax + Bu
         '''
-        dt = 0.01        #[s]                    # Time step
+        dt = 0.1        #[s]                    # Time step
 
         A = np.eye(7)
         A[0, 6] = np.sin(beta_m) * dt

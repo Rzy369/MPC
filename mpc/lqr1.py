@@ -15,14 +15,15 @@ def lqr_controller(x_ref, initial_state, model, k, path):
 
     # Initial state，input and gain variables
     P = [None] * (N + 1)
+    # x = np.zeros(7, 1, (N + 1))
     x = [None] * (N + 1)
     K = [None] * N
     u = [None] * N
 
     # adding x = x_initial as the constraint
-    # x_initial = np.array([initial_state.x, initial_state.y, initial_state.z,
-    #                         initial_state.alpha, initial_state.beta, initial_state.gamma,
-    #                         initial_state.v])
+    x_initial = np.array([initial_state.x, initial_state.y, initial_state.z,
+                            initial_state.alpha, initial_state.beta, initial_state.gamma,
+                            initial_state.v])
     # constraints += [x[:, 0] == x_initial]
     
     # system dynamics matrix A, B
@@ -35,7 +36,7 @@ def lqr_controller(x_ref, initial_state, model, k, path):
     A, B = model.sol_Matrix(alpha_final, beta_final, gamma_final, k)
     
     # terminal cost matrix Qf
-    P[N+1]= solve_discrete_are(A, B, Q, R)  # terminal cost matrix
+    P[N]= solve_discrete_are(A, B, Q, R)  # terminal cost matrix
     
     # Constraints
     # constraints = []
@@ -61,15 +62,18 @@ def lqr_controller(x_ref, initial_state, model, k, path):
     # iterative backward discrete algebraic Riccati equation (IBDA)
     for i in range(N, 0, -1):
         P[i-1] = Q + A.T @ P[i] @ A - (A.T @ P[i] @ B) @ np.linalg.pinv(R + B.T @ P[i] @ B) @ (B.T @ P[i] @ A)
-        
+    
+    costs = 0
+    x[0] = x_initial
     for i in range(N):
         # calculate the optimal feedback gain K
         K[i] = np.linalg.pinv(R + B.T @ P[i+1] @ B) @ (B.T @ P[i+1] @ A)
-        u[i] = -K[i] @ x[:, i]
+        u[i] = -K[i] @ x[i]
+        x[i+1] = A @ x[i] + B @ u[i]
         # adding the costs
-        costs += cvxpy.quad_form(x[:, i] - x_ref[:, i], Q)    # state cost
-        costs += cvxpy.quad_form(u[:, i], R)                  # input cost
-    # costs += cvxpy.quad_form(x[:, N] - x_ref[:, N], P[N+1])     # terminal cost
+        costs += cvxpy.quad_form(x[i] - x_ref[:, i], Q)    # state cost
+        costs += cvxpy.quad_form(u[i], R)                  # input cost
+    costs += cvxpy.quad_form(x[N] - x_ref[:, N], P[N])     # terminal cost
 
 
 
