@@ -9,7 +9,7 @@ def mpc_controller(x_ref, initial_state, model, k, path):
         theta_max = np.deg2rad(60)      #[]             # Max theta per time step
         theta_min = -np.deg2rad(60)     #[]             # Min theta per time step
 
-        Q = np.diag([10, 10, 10, 0, 0, 0, 10])              # weighting matrix
+        Q = np.diag([10, 10, 10, 0.1, 0.1, 0.1, 1])              # weighting matrix
         R = np.diag([5, 5])                             # weighting matrix
 
         # initializing the input and state
@@ -30,9 +30,12 @@ def mpc_controller(x_ref, initial_state, model, k, path):
         beta_initial = initial_state.beta
         gamma_initial = initial_state.gamma
         A, B = model.sol_Matrix(alpha_initial, beta_initial, gamma_initial, k)
+        # A, B = model.sol_Matrix(model.alpha, model.beta, model.gamma, k)
+
 
         for k in range(N):
                 # adding the constriants
+                # A, B = model.sol_Matrix(x[:, 3], x[:, 4], x[:, 5], k)
                 constraints += [x[:, k+1] == A@x[:, k] + B@u[:, k]]
                 constraints += [u[0, k] <= a_max]                      
                 constraints += [u[0, k] >= a_min]

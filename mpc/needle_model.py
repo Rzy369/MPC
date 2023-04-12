@@ -28,5 +28,4 @@ class needle_model_for_prediction():
                       [0, 0],
                       [0, 1],
                       [dt, 0]])
-
         return A, B

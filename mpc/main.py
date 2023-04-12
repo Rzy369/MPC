@@ -14,7 +14,7 @@ time = 0        #[s]                    # Total time
 k = 1/150
 
 # path = path.setting_easy_path(0.5, np.deg2rad(0), k)
-path = path.easy_path(0.5, np.deg2rad(0), k)
+path = path.easy_path(0.5, np.deg2rad(10), k)
 
 robo_mpc = robot_state.robot_state(x = 0, y = 0, z = 0, alpha = 0, beta = 0, gamma = 0, v = 0)
 robo_lqr = robot_state.robot_state(x = 0, y = 0, z = 0, alpha = 0, beta = 0, gamma = 0, v = 0)
