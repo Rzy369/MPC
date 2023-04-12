@@ -56,11 +56,13 @@ def get_ref_state(ref_path, robo_state):
             x_ref[1, i] = ref_path.y_ref[index + i]
             x_ref[2, i] = ref_path.z_ref[index + i]
 
-            alpha_ref, beta_ref, gamma_ref = sol_direction(ref_path, index + i)
+            # alpha_ref, beta_ref, gamma_ref = sol_direction(ref_path, index + i)
 
-            x_ref[3, i] = alpha_ref
-            x_ref[4, i] = beta_ref
-            x_ref[5, i] = gamma_ref
+            alpha_ref, beta_ref, gamma_ref = get_orientation_angles(ref_path, index)
+            
+            x_ref[3, i] = alpha_ref[i]
+            x_ref[4, i] = beta_ref[i]
+            x_ref[5, i] = gamma_ref[i]
 
             v_ref = sol_velocity(ref_path, index + i)
 
@@ -139,3 +141,25 @@ def sol_velocity(ref_path, index):
     v_ref = (dis_pre + dis_lat) / (2 * dt)
 
     return v_ref
+
+def get_orientation_angles(ref_path, index):
+    # calculate tangent vectors along the reference path
+    len = len(ref_path.x_ref)
+    X_ref = []
+    for i in range(len-index-1):
+        X_ref.vstack([ref_path.x_ref[i], ref_path.y_ref[i], ref_path.z_ref[i]])
+    dX = np.diff(X_ref, axis=0)
+    dX = np.vstack([dX[0], dX])  # prepend first element to maintain size of dX
+    
+    # calculate orientation angles
+    alpha = np.arctan2(dX[:,1], dX[:,0])
+    beta = np.arctan2(-dX[:,2], np.sqrt(dX[:,0]**2 + dX[:,1]**2))
+    gamma = np.zeros_like(alpha)
+    
+    # calculate orientation angle gamma as the average angle between consecutive alpha and beta angles
+    for i in range(1, len(gamma)):
+        delta_alpha = alpha[i] - alpha[i-1]
+        delta_beta = beta[i] - beta[i-1]
+        gamma[i] = np.arctan2(np.sin(delta_alpha) * np.cos(beta[i]), np.sin(delta_beta) * np.cos(alpha[i]))    
+    
+    return alpha, beta, gamma
