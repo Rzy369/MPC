@@ -41,7 +41,6 @@ def get_ref_state(ref_path, robo_state):
             x_ref[2, i] = ref_path.z_ref[index + i]
 
             alpha_ref, beta_ref, gamma_ref = sol_direction(ref_path, index + i)
-
             x_ref[3, i] = alpha_ref
             x_ref[4, i] = beta_ref
             x_ref[5, i] = gamma_ref
@@ -56,9 +55,7 @@ def get_ref_state(ref_path, robo_state):
             x_ref[1, i] = ref_path.y_ref[index + i]
             x_ref[2, i] = ref_path.z_ref[index + i]
 
-            # alpha_ref, beta_ref, gamma_ref = sol_direction(ref_path, index + i)
-
-            alpha_ref, beta_ref, gamma_ref = get_orientation_angles(ref_path, index)
+            alpha_ref, beta_ref, gamma_ref = sol_direction(ref_path, index + i)
             
             x_ref[3, i] = alpha_ref[i]
             x_ref[4, i] = beta_ref[i]
@@ -144,10 +141,10 @@ def sol_velocity(ref_path, index):
 
 def get_orientation_angles(ref_path, index):
     # calculate tangent vectors along the reference path
-    len = len(ref_path.x_ref)
+    size = len(ref_path.x_ref)
     X_ref = []
-    for i in range(len-index-1):
-        X_ref.vstack([ref_path.x_ref[i], ref_path.y_ref[i], ref_path.z_ref[i]])
+    for i in range(size-index-1):
+        X_ref.vstack(np.array(ref_path.x_ref[i]), np.array(ref_path.y_ref[i]), np.array(ref_path.z_ref[i]))
     dX = np.diff(X_ref, axis=0)
     dX = np.vstack([dX[0], dX])  # prepend first element to maintain size of dX
     
