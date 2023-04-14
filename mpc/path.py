@@ -69,10 +69,10 @@ def generate_rand_path(k):
 
     return ref_path
 
-def easy_path(a, theta, k):
+def straight_path(a, k):
     rob = robot_state.robot_state()
     
-    step = 100                          # step between stages
+    theta = 0
 
     x = []
     y = []
@@ -81,6 +81,7 @@ def easy_path(a, theta, k):
     beta = []
     gamma = []
     v = []
+
     x.append(rob.x)
     y.append(rob.y)
     z.append(rob.z)
@@ -88,8 +89,206 @@ def easy_path(a, theta, k):
     beta.append(rob.beta)
     gamma.append(rob.gamma)
     v.append(rob.v)
-    for i in range(step):
+
+    for i in range(10):
         rob.state_update(a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    for i in range(80):
+        rob.state_update(0, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+    
+    for i in range(10):
+        rob.state_update(-a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    ref_path = path(x, y, z, alpha, beta, gamma, v)
+
+    return ref_path
+
+def curving_path(a, theta, k):
+    rob = robot_state.robot_state()
+    
+
+    x = []
+    y = []
+    z = []
+    alpha = []
+    beta = []
+    gamma = []
+    v = []
+
+    x.append(rob.x)
+    y.append(rob.y)
+    z.append(rob.z)
+    alpha.append(rob.alpha)
+    beta.append(rob.beta)
+    gamma.append(rob.gamma)
+    v.append(rob.v)
+
+    for i in range(10):
+        rob.state_update(a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    for i in range(80):
+        rob.state_update(0, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+    
+    for i in range(10):
+        rob.state_update(-a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    ref_path = path(x, y, z, alpha, beta, gamma, v)
+
+    return ref_path
+
+def curving_path_initial0(a, theta, k):
+    rob = robot_state.robot_state()
+
+    theta_0 = 0
+
+    x = []
+    y = []
+    z = []
+    alpha = []
+    beta = []
+    gamma = []
+    v = []
+
+    x.append(rob.x)
+    y.append(rob.y)
+    z.append(rob.z)
+    alpha.append(rob.alpha)
+    beta.append(rob.beta)
+    gamma.append(rob.gamma)
+    v.append(rob.v)
+
+    for i in range(4):
+        rob.state_update(a, theta_0, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    for i in range(6):
+        rob.state_update(a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    for i in range(80):
+        rob.state_update(0, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+    
+    for i in range(10):
+        rob.state_update(-a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    ref_path = path(x, y, z, alpha, beta, gamma, v)
+
+    return ref_path
+
+def varying_theta_path(a, k):
+    rob = robot_state.robot_state()
+
+    x = []
+    y = []
+    z = []
+    alpha = []
+    beta = []
+    gamma = []
+    v = []
+
+    theta = 0
+
+    x.append(rob.x)
+    y.append(rob.y)
+    z.append(rob.z)
+    alpha.append(rob.alpha)
+    beta.append(rob.beta)
+    gamma.append(rob.gamma)
+    v.append(rob.v)
+
+    for i in range(10):
+        theta += np.deg2rad(0.05)
+        rob.state_update(a, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+
+    for i in range(80):
+        theta += np.deg2rad(0.1)
+        rob.state_update(0, theta, k)
+        x.append(rob.x)
+        y.append(rob.y)
+        z.append(rob.z)
+        alpha.append(rob.alpha)
+        beta.append(rob.beta)
+        gamma.append(rob.gamma)
+        v.append(rob.v)
+    
+    for i in range(10):
+        theta += np.deg2rad(0.05)
+        rob.state_update(-a, theta, k)
         x.append(rob.x)
         y.append(rob.y)
         z.append(rob.z)

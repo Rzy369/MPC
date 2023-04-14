@@ -3,14 +3,16 @@ import numpy as np
 
 def mpc_controller(x_ref, initial_state, model, k, path):
         v0 = 0                          #[m/s]          # Initial speed
-        N = 6                           #[]             # Predict Horizon
+        N = 6                          #[]             # Predict Horizon
         a_max = 3                       #[m/s^2]        # Max acceleration
         a_min = -1                      #[m/s^2]        # Min acceleration
         theta_max = np.deg2rad(60)      #[]             # Max theta per time step
         theta_min = -np.deg2rad(60)     #[]             # Min theta per time step
+        v_max = 2                       #[m/s]          # maximum speed
 
-        Q = np.diag([10, 10, 10, 0.1, 0.1, 0.1, 1])              # weighting matrix
-        R = np.diag([5, 5])                             # weighting matrix
+        Q = np.diag([10, 10, 10, 0.1, 0.1, 0.1, 10])              # weighting matrix
+        R = np.diag([1, 1])                             # weighting matrix
+        P = np.diag([100, 100, 100, 100, 100, 100, 100])
 
         # initializing the input and state
         x = cvxpy.Variable((7, N+1))
@@ -41,13 +43,14 @@ def mpc_controller(x_ref, initial_state, model, k, path):
                 constraints += [u[0, k] >= a_min]
                 constraints += [u[1, k] <= theta_max]
                 constraints += [u[1, k] >= theta_min]
+                constraints += [x[6, k] <= v_max]
 
                 # adding the costs
                 costs += cvxpy.quad_form(x[:, k] - x_ref[:, k], Q)
                 costs += cvxpy.quad_form(u[:, k], R)
 
         costs += cvxpy.quad_form(x[:, N] - x_ref[:, N], Q)
-        costs += cvxpy.quad_form(x[:3, N] - [path.x_ref[-1], path.y_ref[-1], path.z_ref[-1]], Q[:3, :3])
+        costs += cvxpy.quad_form(x[:, N] - [path.x_ref[-1], path.y_ref[-1], path.z_ref[-1], path.alpha_ref[-1], path.beta_ref[-1], path.gamma_ref[-1], path.v_ref[-1]], P)
         # solving
         problem = cvxpy.Problem(cvxpy.Minimize(costs), constraints)
         problem.solve()

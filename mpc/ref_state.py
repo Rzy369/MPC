@@ -3,7 +3,7 @@ import math
 import find_nearest_index
 
 def ref_state(ref_path, robo_state):
-    N = 6                           #[]             # Predict Horizon
+    N = 6                          #[]             # Predict Horizon
     size = len(ref_path.x_ref)      # length of ref_path
     print(size)
     x_ref = np.zeros((7, N+1))
@@ -39,12 +39,12 @@ def ref_state(ref_path, robo_state):
             x_ref[5, i] = ref_path.gamma_ref[index + i]
             x_ref[6, i] = ref_path.v_ref[index + i]
 
-        x_ref[0, N+1] = ref_path.x_ref[size - 1]
-        x_ref[1, N+1] = ref_path.y_ref[size - 1]
-        x_ref[2, N+1] = ref_path.z_ref[size - 1]
-        x_ref[3, N+1] = 0
-        x_ref[4, N+1] = 0
-        x_ref[5, N+1] = 0
-        x_ref[6, N+1] = 0
+        x_ref[0, N] = ref_path.x_ref[size - 1]
+        x_ref[1, N] = ref_path.y_ref[size - 1]
+        x_ref[2, N] = ref_path.z_ref[size - 1]
+        x_ref[3, N] = 0
+        x_ref[4, N] = 0
+        x_ref[5, N] = 0
+        x_ref[6, N] = 0
         
     return x_ref

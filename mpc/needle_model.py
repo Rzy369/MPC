@@ -29,3 +29,22 @@ class needle_model_for_prediction():
                       [0, 1],
                       [dt, 0]])
         return A, B
+
+    def sol_linearized_Matrix(self):
+        '''
+        According to the paper, the kinematics model is 
+        q_(m+1) = q_m + dq_m * dt,
+        when selecting u = [a, theta],
+        hereby the theta is the angle rotated about the z-axis.
+        the model can be transfered to x = Ax + Bu
+        '''
+        dt = 0.1        #[s]                    # Time step
+
+        A = np.eye(2)
+        A[0, 1] = dt
+        # A[1, 1] = k * dt
+
+
+        B = np.array([[0, 1],
+                      [dt, 0]])
+        return A, B

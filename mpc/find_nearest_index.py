@@ -3,7 +3,7 @@ def find_nearest_index(ref_path, robo_state):
     Finding the nearest point on reference path,
     based on the robot current state and position.
     '''
-    N = 6                           # Number
+    N = 6                          # Number
     size = len(ref_path.x_ref)      # length of ref_path
     err_list = []
     for i in range(1, size - N):
