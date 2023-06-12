@@ -16,7 +16,7 @@ k = 1/150000
 # Various path to generate
 # path = path.straight_path(0.5, k)
 # path = path.curving_path_initial0(0.5, np.deg2rad(1), k)
-path = path.curving_path_initial0(0.5, np.deg2rad(5), k)
+path = path.curving_path_initial0(0.5, np.deg2rad(1), k)
 # path = path.varying_theta_path(0.5, k)
 
 robo_mpc = robot_state.robot_state(x = 0, y = 0, z = 0, alpha = 0, beta = 0, gamma = 0, v = 0)
@@ -45,6 +45,9 @@ ax.plot(path.x_ref, path.y_ref, path.z_ref)
 x_robot = []
 y_robot = []
 z_robot = []
+alpha_robot = []
+beta_robot = []
+gamma_robot = []
 v = []
 t = []
 
@@ -68,14 +71,23 @@ while time < 7:
     y_robot.append(y_cur)
     z_cur = robo_mpc.z
     z_robot.append(z_cur)
+    alpha_cur = robo_mpc.alpha
+    alpha_robot.append(alpha_cur)
+    beta_cur = robo_mpc.beta
+    beta_robot.append(beta_cur)
+    gamma_cur = robo_mpc.gamma
+    gamma_robot.append(gamma_cur)
     v_cur = robo_mpc.v
     v.append(v_cur)
     
 
-print(x_robot)
-print(y_robot)
-print(z_robot)
-print(v)
+# print(x_robot)
+# print(y_robot)
+# print(z_robot)
+# print(v)
+print(alpha_robot)
+print(beta_robot)
+print(gamma_robot)
 
 
     # ax.scatter(x_cur, y_cur, z_cur, s=20, c='b', marker='o')
