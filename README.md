@@ -21,7 +21,7 @@ numpy, matplotlib, CVXPY
 
 ```
 git clone git@github.com:Rzy369/MPC.git
-cd MPC
+cd time_varying
 python main.py
 ```
 
