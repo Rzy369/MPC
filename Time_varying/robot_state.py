@@ -18,9 +18,9 @@ class robot_state():
         theta is the angel rotated around the z axis.
         '''
         dt = 0.1
-        self.x += v * np.sin(self.beta) * dt
-        self.y += v * (-np.cos(self.beta) * np.sin(self.alpha)) * dt
-        self.z += v * (np.cos(self.alpha) * np.cos(self.beta)) * dt
+        self.x += v * np.sin(self.beta) * dt * 1000
+        self.y += v * (-np.cos(self.beta) * np.sin(self.alpha)) * dt * 100
+        self.z += v * (np.cos(self.alpha) * np.cos(self.beta)) * dt * 100
         self.alpha += v * (kappa * np.cos(self.gamma) / np.cos(self.beta)) * dt
         self.beta += v * kappa * np.sin(self.gamma) * dt
         self.gamma += v * (-kappa * np.cos(self.gamma) * np.tan(self.beta)) * dt + w * dt

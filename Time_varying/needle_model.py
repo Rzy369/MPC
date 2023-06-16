@@ -14,22 +14,22 @@ class needle_model():
         '''
         dt = 0.1        #[s]                    # Time step
 
-        A = np.eye(6)
-        A[0, 3] = np.cos(beta_0) * v_0 * dt
-        A[1, 3] = -np.cos(alpha_0) * np.cos(beta_0) * v_0 * dt
-        A[1, 4] = np.sin(alpha_0) * np.sin(beta_0) * v_0 * dt
-        A[2, 3] = -np.sin(alpha_0) * np.cos(beta_0) * v_0 * dt
-        A[2, 4] = -np.cos(alpha_0) * np.sin(beta_0) * v_0 * dt
-        A[3, 4] = kappa * np.cos(gamma_0) * np.tan(beta_0) / np.cos(beta_0) * v_0 * dt
-        A[3, 5] = -kappa * np.sin(gamma_0) / np.cos(beta_0) * v_0 * dt
-        A[4, 5] = kappa * np.cos(gamma_0) * v_0 * dt
-        A[5, 4] = -kappa * np.cos(gamma_0) / ((np.cos(beta_0)) ** 2) * v_0 * dt
-        A[5, 5] = kappa * np.sin(gamma_0) * np.tan(beta_0) * v_0 * dt
+        A = np.zeros([6, 6])
+        A[0, 3] = np.cos(beta_0) * v_0 * 1000
+        A[1, 3] = -np.cos(alpha_0) * np.cos(beta_0) * v_0 * 100
+        A[1, 4] = np.sin(alpha_0) * np.sin(beta_0) * v_0 * 100
+        A[2, 3] = -np.sin(alpha_0) * np.cos(beta_0) * v_0 * 100
+        A[2, 4] = -np.cos(alpha_0) * np.sin(beta_0) * v_0 * 100
+        A[3, 4] = kappa * np.cos(gamma_0) * np.tan(beta_0) / np.cos(beta_0) * v_0
+        A[3, 5] = -kappa * np.sin(gamma_0) / np.cos(beta_0) * v_0 
+        A[4, 5] = kappa * np.cos(gamma_0) * v_0
+        A[5, 4] = -kappa * np.cos(gamma_0) / ((np.cos(beta_0)) ** 2) * v_0 
+        A[5, 5] = kappa * np.sin(gamma_0) * np.tan(beta_0) * v_0 
 
-        B = np.array([[np.sin(beta_0), 0],
-                      [-np.cos(beta_0) * np.sin(alpha_0), 0],
-                      [np.cos(alpha_0)*np.cos(beta_0), 0],
-                      [kappa * np.cos(gamma_0) / np.cos(beta_0), 0],
-                      [kappa * np.sin(gamma_0), 0],
-                      [-kappa * np.cos(gamma_0) * np.tan(beta_0), w_0*dt]])
+        B = np.array([[np.sin(beta_0) * 1000 * dt, 0],
+                      [-np.cos(beta_0) * np.sin(alpha_0)* dt, 0],
+                      [np.cos(alpha_0)*np.cos(beta_0)* dt, 0],
+                      [kappa * np.cos(gamma_0) / np.cos(beta_0)* dt, 0],
+                      [kappa * np.sin(gamma_0)* dt, 0],
+                      [-kappa * np.cos(gamma_0) * np.tan(beta_0)* dt, dt]])
         return A,B

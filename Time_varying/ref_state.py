@@ -36,9 +36,20 @@ def ref_state(ref_path, robo_state, N):
             x_ref[3, i] = ref_path.alpha_ref[size - 1]
             x_ref[4, i] = ref_path.beta_ref[size - 1]
             x_ref[5, i] = ref_path.gamma_ref[size - 1]
-            x_ref[6, i] = ref_path.v_ref[size - 1]
-            x_ref[7, i] = ref_path.w_ref[size - 1]
+            x_ref[6, i] = 0
+            x_ref[7, i] = 0
     # print("the ref state is ", x_ref)
+
+    if index >= size - 2: 
+        for i in range(N+1):
+            x_ref[0, i] = ref_path.x_ref[size - 1]
+            x_ref[1, i] = ref_path.y_ref[size - 1]
+            x_ref[2, i] = ref_path.z_ref[size - 1]
+            x_ref[3, i] = ref_path.alpha_ref[size - 1]
+            x_ref[4, i] = ref_path.beta_ref[size - 1]
+            x_ref[5, i] = ref_path.gamma_ref[size - 1]
+            x_ref[6, i] = 0
+            x_ref[7, i] = 0
 
         
     return x_ref

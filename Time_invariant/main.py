@@ -6,12 +6,13 @@ import path
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import ref_state
+import scipy.io
 
 dt = 0.1        #[s]                    # Time step
 time = 0        #[s]                    # Total time
 N = 8                                   # Predict horizon
 
-path = path.setting_path(0.1, np.deg2rad(0.5))
+path = path.setting_path(0.1, np.deg2rad(0.1))
 
 robo = robot_state.robot_state(z = 0, gamma = 0)
 model = needle_model.needle_model()
@@ -54,14 +55,17 @@ while time < 10:
     ax.scatter(0, 0, z_cur, s=20, c='b', marker='o')
     plt.pause(0.001)
 
-print('~~~~~~~~~~~~~~~~~~~~~~~ref z position~~~~~~~~~~~~~~~')
-print(path.z_ref)
+scipy.io.savemat('../data/path_ti.mat', {'z_ref':path.z_ref, 'gamma_ref':path.gamma_ref})
+scipy.io.savemat('../data/robot_ti.mat', {'z_robot':z_robot, 'gamma_robot':gamma_robot})
 
-print('~~~~~~~~~~~~~~~~~~~~~~~z position of robot~~~~~~~~~~~~~~~')
-print(z_robot)
+# print('~~~~~~~~~~~~~~~~~~~~~~~ref z position~~~~~~~~~~~~~~~')
+# print(path.z_ref)
 
-print('~~~~~~~~~~~~~~~~~~~~~~~ref gamma angle~~~~~~~~~~~~~~~')
-print(path.gamma_ref)
+# print('~~~~~~~~~~~~~~~~~~~~~~~z position of robot~~~~~~~~~~~~~~~')
+# print(z_robot)
 
-print('~~~~~~~~~~~~~~~~~~~~~~~gamma angle of robot~~~~~~~~~~~~~~~')
-print(gamma_robot)
+# print('~~~~~~~~~~~~~~~~~~~~~~~ref gamma angle~~~~~~~~~~~~~~~')
+# print(path.gamma_ref)
+
+# print('~~~~~~~~~~~~~~~~~~~~~~~gamma angle of robot~~~~~~~~~~~~~~~')
+# print(gamma_robot)

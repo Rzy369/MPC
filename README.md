@@ -8,7 +8,6 @@ Motivated by the challenges of needle insertion in medical procedures, this proj
 The added functionalities by us are:
 
 - Needle dynamics and simplification
-- Linear MPC and adaptive MPC design
 - Proof of stability
 - numerical simulations
 

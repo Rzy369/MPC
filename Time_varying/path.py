@@ -38,9 +38,9 @@ def setting_path(v, w, kappa):
     gamma.append(rob.gamma)
     v_ref.append(rob.v)
     w_ref.append(rob.w)
-    
-    for i in range(10):
-        rob.state_update(0.1,w,kappa)
+
+    for i in range(50):
+        rob.state_update(v,w,kappa)
         x.append(rob.x)
         y.append(rob.y)
         z.append(rob.z)
@@ -50,8 +50,8 @@ def setting_path(v, w, kappa):
         v_ref.append(rob.v)
         w_ref.append(rob.w)
 
-    for i in range(90):
-        rob.state_update(v,w,kappa)
+    for i in range(10):
+        rob.state_update(0.009-0.001*i,w,kappa)
         x.append(rob.x)
         y.append(rob.y)
         z.append(rob.z)

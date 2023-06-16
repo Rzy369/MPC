@@ -18,8 +18,13 @@ def setting_path(v,w):
     z = []
     gamma = []
 
-    for i in range(step):
+    for i in range(step-10):
         rob.state_update(v,w)
+        z.append(rob.z)
+        gamma.append(rob.gamma)
+
+    for i in range(10):
+        rob.state_update(0.09 - 0.01*i,w)
         z.append(rob.z)
         gamma.append(rob.gamma)
 
